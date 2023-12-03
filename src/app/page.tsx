@@ -2,6 +2,11 @@ import Link from "next/link";
 import { PokemonData, Pokemones } from "../../types/types";
 import Image from "next/image";
 import CardPokemon from "@/components/CardPokemon";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Lista de Pokemons - Pokedex'
+}
 
 async function getPokemones()
 {

@@ -3,6 +3,7 @@ import { Pokemon, PokemonData } from "../../../../types/types"
 import Image from "next/image"
 import Link from "next/link"
 import ButtonFavorito from "@/components/ButtonFavorito"
+import { Metadata, ResolvingMetadata } from "next"
 
 interface pokemonPageProps
 {
@@ -18,6 +19,19 @@ async function getPokemon(id: string)
   return data
 }
 
+export async function generateMetadata(
+  { params: { id } }: pokemonPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> 
+{
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + id)
+  const data: Pokemon = await res.json()
+
+  return {
+    title: `${data.name} - Pokedex`
+  }
+}
+
 export async function generateStaticParams()
 {
   const res = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=151')
@@ -31,6 +45,8 @@ export async function generateStaticParams()
     id: String(pokemon.id)
   }))
 }
+
+
 
 export default async function pokemonPage({ params: { id } }: pokemonPageProps)
 {
